@@ -1,0 +1,18 @@
+# Entorno de Python (cada uno crea el suyo)
+.venv/
+__pycache__/
+*.pyc
+
+# Editor
+.idea/
+.vscode/
+
+# Base local y resultados de ejecuciones
+db.sqlite3
+salidas/
+
+# Datos grandes del reto
+sample_submission.csv
+
+# Secretos locales
+.env

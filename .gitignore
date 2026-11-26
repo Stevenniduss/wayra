@@ -1,10 +1,10 @@
-# Data de la competencia (se baja de Kaggle, no se sube a GitHub)
+# Data de la competencia (Kaggle)
 data/*
 !data/README.md
 *.npz
 *.csv
 
-# Caché del GFS y salidas del producto
+# Cache del GFS y salidas del producto
 gfs_cache.npz
 salidas/
 
@@ -12,9 +12,25 @@ salidas/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.pytest_cache/
 .venv/
 venv/
 
-# Claves y entorno
+# Django
+db.sqlite3
+*.log
+
+# Claves y variables de entorno
 .env
+.env.*
+!.env.example
 kaggle.json
+
+# PyCharm y otros editores
+.idea/
+.vscode/
+
+# React y Node.js
+node_modules/
+dist/
+.vite/
