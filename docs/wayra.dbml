@@ -1,0 +1,95 @@
+// WAYRA v2 - diseño de datos para validar con el equipo (NO es el script de creación).
+// Versión reducida para la hackathon: 6 tablas. La v1 (8 tablas) queda en wayra_v1.dbml.
+// Pegar en https://dbdiagram.io para ver el DER y exportarlo como imagen (Export > PNG).
+//
+// Fuentes de datos:
+// - actividad, destino, punto_ruta y criterio se cargan desde los archivos de configuración
+//   al iniciar (RF015, RNF003). Los archivos mandan; la base es una copia para consultar.
+// - Las grillas completas (H x 70 x 35 x 4) viven en archivos .npz, no en la base.
+// - La altitud de cada celda sale de static.npz usando fila y col del punto.
+
+Project wayra {
+  database_type: 'SQLite'
+  Note: 'WAYRA v2 - 6 tablas. Grillas en .npz; relieve en static.npz.'
+}
+
+Table actividad {
+  id integer [pk, increment]
+  codigo varchar(30) [not null, unique, note: 'caminata | roca | alta_montana']
+  nombre varchar(80) [not null]
+  duracion_tipica_h integer [note: 'CHECK 1..72']
+}
+
+Table destino {
+  id integer [pk, increment]
+  codigo varchar(40) [not null, unique, note: 'p. ej. laguna-69']
+  nombre varchar(100) [not null]
+  actividad_id integer [not null, ref: > actividad.id]
+  descripcion varchar(500)
+  activo boolean [not null, default: true]
+  fuente_coordenadas varchar(200) [not null, note: 'de dónde salen lat/lon y altitudes']
+}
+
+Table punto_ruta {
+  id integer [pk, increment]
+  destino_id integer [not null, ref: > destino.id]
+  nombre varchar(100) [not null]
+  zona varchar(12) [not null, note: 'CHECK valle | campo_base | zona_alta']
+  orden integer [not null]
+  lat real [not null, note: 'CHECK dentro del dominio WRF']
+  lon real [not null, note: 'CHECK dentro del dominio WRF']
+  altitud_real_m integer [not null]
+  fila integer [not null, note: 'celda de la grilla, CHECK 0..69']
+  col integer [not null, note: 'celda de la grilla, CHECK 0..34']
+  indexes {
+    (destino_id, orden) [unique]
+  }
+}
+
+Table criterio {
+  id integer [pk, increment]
+  actividad_id integer [not null, ref: > actividad.id]
+  zona varchar(12) [not null, note: 'CHECK valle | campo_base | zona_alta']
+  variable varchar(20) [not null, note: 'CHECK temperatura | sensacion_termica | viento | humedad']
+  sentido varchar(3) [not null, note: 'CHECK max | min']
+  umbral_amarillo real [not null]
+  umbral_rojo real [not null]
+  unidad varchar(6) [not null, note: 'C | km/h | %']
+  fuente varchar(300) [not null, note: 'cita o "criterio del equipo" (RNF003)']
+  indexes {
+    (actividad_id, zona, variable) [unique]
+  }
+}
+
+Table ejecucion {
+  id integer [pk, increment]
+  estado varchar(10) [not null, default: 'en_proceso', note: 'CHECK en_proceso | exito | error']
+  es_respaldo boolean [not null, default: false, note: 'ejecución guardada para la demo sin internet (RNF002)']
+  modelo_version varchar(20) [not null]
+  sha256_pesos char(64) [not null, note: 'mismos pesos que el notebook (RNF009)']
+  gfs_inicio_utc datetime [not null, note: 'hora de inicio de la corrida GFS']
+  inicio_proceso_utc datetime [not null]
+  fin_proceso_utc datetime
+  horizonte_h integer [not null, note: 'CHECK 1..72']
+  archivo_gfs varchar(255) [note: '.npz con la entrada GFS (17x13) y la lluvia; para el comparador RF009 y RF020']
+  archivo_salida varchar(255) [note: '.npz con la salida del modelo (H, 70, 35, 4), canales RH, T, U, V']
+  mensaje_error varchar(1000)
+  indexes {
+    (estado, gfs_inicio_utc)
+  }
+}
+
+Table pronostico_punto {
+  ejecucion_id integer [not null, ref: > ejecucion.id]
+  punto_ruta_id integer [not null, ref: > punto_ruta.id]
+  valido_utc datetime [not null]
+  fuente varchar(5) [not null, note: 'CHECK wayra | gfs']
+  t_k real [not null, note: 'kelvin, como sale del modelo; se convierte a °C al mostrar']
+  rh_pct real [not null, note: 'CHECK 0..100; el modelo ya recorta a ese rango']
+  u_ms real [not null]
+  v_ms real [not null]
+  precip_mm real [note: 'solo filas fuente = gfs (RF020); NULL en wayra']
+  indexes {
+    (ejecucion_id, punto_ruta_id, valido_utc, fuente) [pk]
+  }
+}

@@ -1,0 +1,117 @@
+// WAYRA v1 - diseño de datos para validar con el equipo (NO es el script de creación).
+// Copia del bloque DBML del informe técnico. Pegar en https://dbdiagram.io para ver el diagrama.
+
+Project wayra {
+  database_type: 'SQLite'
+  Note: 'WAYRA v1 - metadatos. Las grillas H x 70 x 35 x 4 viven en archivos .npz'
+}
+
+Table actividad {
+  id integer [pk, increment]
+  codigo varchar(30) [not null, unique, note: 'caminata | roca | alta_montana']
+  nombre varchar(80) [not null]
+  descripcion varchar(300)
+  duracion_tipica_h integer [note: 'CHECK 1..72']
+}
+
+Table destino {
+  id integer [pk, increment]
+  codigo varchar(40) [not null, unique, note: 'slug, p. ej. laguna-69']
+  nombre varchar(100) [not null]
+  actividad_id integer [not null, ref: > actividad.id]
+  descripcion varchar(500)
+  activo boolean [not null, default: true]
+  fuente_coordenadas varchar(200) [not null]
+}
+
+Table celda {
+  id integer [pk, note: 'id = fila * 35 + col']
+  fila integer [not null, note: 'CHECK 0..69; fila 0 = sur']
+  col integer [not null, note: 'CHECK 0..34; col 0 = oeste']
+  lat real [not null]
+  lon real [not null]
+  altitud_dem_m real [not null]
+  indexes {
+    (fila, col) [unique]
+  }
+}
+
+Table punto_ruta {
+  id integer [pk, increment]
+  destino_id integer [not null, ref: > destino.id]
+  celda_id integer [not null, ref: > celda.id]
+  nombre varchar(100) [not null]
+  zona varchar(12) [not null, note: 'CHECK valle | campo_base | zona_alta | cumbre']
+  orden integer [not null]
+  lat real [not null, note: 'CHECK -10.27..-8.40']
+  lon real [not null, note: 'CHECK -78.04..-77.10']
+  altitud_real_m integer [not null]
+  indexes {
+    (destino_id, orden) [unique]
+    celda_id
+  }
+}
+
+Table modelo_version {
+  id integer [pk, increment]
+  nombre varchar(60) [not null]
+  version varchar(20) [not null]
+  arquitectura varchar(200) [not null]
+  archivo_pesos varchar(255) [not null]
+  sha256_pesos char(64) [not null, unique]
+  score_kaggle_publico real
+  score_validacion real
+  registrado_utc datetime [not null]
+  indexes {
+    (nombre, version) [unique]
+  }
+}
+
+Table ejecucion_pronostico {
+  id integer [pk, increment]
+  modelo_version_id integer [not null, ref: > modelo_version.id]
+  origen varchar(12) [not null, default: 'programada', note: 'CHECK programada | manual | respaldo']
+  estado varchar(10) [not null, default: 'en_proceso', note: 'CHECK en_proceso | exito | error']
+  inicio_proceso_utc datetime [not null]
+  fin_proceso_utc datetime
+  primera_hora_utc datetime [note: 'primera hora pronosticada']
+  horizonte_h integer [not null, note: 'CHECK 1..72']
+  archivo_gfs varchar(255)
+  archivo_salida varchar(255)
+  sha256_salida char(64)
+  mensaje_error varchar(1000)
+  indexes {
+    (estado, primera_hora_utc)
+  }
+}
+
+Table pronostico_punto {
+  ejecucion_id integer [not null, ref: > ejecucion_pronostico.id]
+  punto_ruta_id integer [not null, ref: > punto_ruta.id]
+  valido_utc datetime [not null]
+  fuente varchar(5) [not null, note: 'CHECK wayra | gfs']
+  t_k real [not null, note: 'kelvin']
+  rh_pct real [not null, note: 'CHECK 0..100']
+  u_ms real [not null]
+  v_ms real [not null]
+  indexes {
+    (ejecucion_id, punto_ruta_id, valido_utc, fuente) [pk]
+    (punto_ruta_id, valido_utc)
+  }
+}
+
+Table criterio_meteorologico {
+  id integer [pk, increment]
+  actividad_id integer [not null, ref: > actividad.id]
+  zona varchar(12) [not null]
+  variable varchar(20) [not null, note: 'CHECK temperatura | sensacion_termica | viento | humedad']
+  sentido varchar(3) [not null, note: 'CHECK max | min']
+  umbral_amarillo real [not null]
+  umbral_rojo real [not null]
+  unidad varchar(6) [not null, note: 'C | km/h | %']
+  fuente varchar(300) [not null]
+  version varchar(20) [not null]
+  indexes {
+    (actividad_id, zona, variable, version) [unique]
+  }
+}

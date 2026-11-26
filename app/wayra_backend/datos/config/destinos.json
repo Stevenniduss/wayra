@@ -1,0 +1,51 @@
+[
+  {
+    "codigo": "laguna-69",
+    "nombre": "Laguna 69",
+    "actividad": "caminata",
+    "descripcion": "Caminata de un día desde Cebollapampa, Parque Nacional Huascarán.",
+    "activo": true,
+    "fuente_coordenadas": "Aproximadas por el equipo. Pendiente: verificar con los guías",
+    "puntos": [
+      { "nombre": "Cebollapampa", "zona": "valle", "lat": -9.0390, "lon": -77.6240, "altitud_real_m": 3900 },
+      { "nombre": "Pampa intermedia", "zona": "campo_base", "lat": -9.0230, "lon": -77.6140, "altitud_real_m": 4300 },
+      { "nombre": "Laguna 69", "zona": "zona_alta", "lat": -9.0094, "lon": -77.6119, "altitud_real_m": 4600 }
+    ]
+  },
+  {
+    "codigo": "laguna-churup",
+    "nombre": "Laguna Churup",
+    "actividad": "caminata",
+    "descripcion": "Caminata corta desde Pitec, cerca de Huaraz.",
+    "activo": true,
+    "fuente_coordenadas": "Aproximadas por el equipo. Pendiente: verificar con los guías",
+    "puntos": [
+      { "nombre": "Pitec", "zona": "valle", "lat": -9.4790, "lon": -77.4560, "altitud_real_m": 3850 },
+      { "nombre": "Laguna Churup", "zona": "zona_alta", "lat": -9.4810, "lon": -77.4280, "altitud_real_m": 4450 }
+    ]
+  },
+  {
+    "codigo": "nevado-pisco",
+    "nombre": "Nevado Pisco",
+    "actividad": "alta_montana",
+    "descripcion": "Ascenso de dos o tres días con noche en el campo base.",
+    "activo": true,
+    "fuente_coordenadas": "Aproximadas por el equipo. Pendiente: verificar con los guías",
+    "puntos": [
+      { "nombre": "Cebollapampa", "zona": "valle", "lat": -9.0390, "lon": -77.6240, "altitud_real_m": 3900 },
+      { "nombre": "Refugio Perú", "zona": "campo_base", "lat": -9.0170, "lon": -77.6380, "altitud_real_m": 4665 },
+      { "nombre": "Cumbre", "zona": "zona_alta", "lat": -9.0103, "lon": -77.6360, "altitud_real_m": 5752 }
+    ]
+  },
+  {
+    "codigo": "hatun-machay",
+    "nombre": "Hatun Machay",
+    "actividad": "roca",
+    "descripcion": "Bosque de piedras para escalada deportiva.",
+    "activo": true,
+    "fuente_coordenadas": "Aproximadas por el equipo. Pendiente: verificar con los guías",
+    "puntos": [
+      { "nombre": "Refugio Hatun Machay", "zona": "campo_base", "lat": -10.0786, "lon": -77.2333, "altitud_real_m": 4250 }
+    ]
+  }
+]

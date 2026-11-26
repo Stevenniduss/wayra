@@ -1,0 +1,9 @@
+{
+  "_nota": "Valores de trabajo. Pendiente: revisarlos con Noa y los guías.",
+  "umbral_estimado_m": 300,
+  "gradiente_termico_c_por_km": 6.5,
+  "horas_pasadas": 2,
+  "horizonte_h": 48,
+  "desactualizada_h": 12,
+  "duraciones_ventana_h": [4, 6, 8, 12]
+}

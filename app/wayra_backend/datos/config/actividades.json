@@ -1,0 +1,5 @@
+[
+  { "codigo": "caminata", "nombre": "Caminata", "duracion_tipica_h": 6 },
+  { "codigo": "roca", "nombre": "Escalada en roca", "duracion_tipica_h": 6 },
+  { "codigo": "alta_montana", "nombre": "Alta montaña", "duracion_tipica_h": 12 }
+]

@@ -1,0 +1,19 @@
+{
+  "_nota": "Umbrales provisionales. Pendiente: validarlos con los guías antes de la demo. sentido max = alerta al subir; min = alerta al bajar.",
+  "criterios": [
+    { "actividad": "caminata", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "temperatura", "sentido": "min", "umbral_amarillo": 0, "umbral_rojo": -5, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "caminata", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "sensacion_termica", "sentido": "min", "umbral_amarillo": -5, "umbral_rojo": -10, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "caminata", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "viento", "sentido": "max", "umbral_amarillo": 30, "umbral_rojo": 50, "unidad": "km/h", "fuente": "Provisional del equipo" },
+    { "actividad": "caminata", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "humedad", "sentido": "max", "umbral_amarillo": 90, "umbral_rojo": 98, "unidad": "%", "fuente": "Provisional del equipo" },
+
+    { "actividad": "roca", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "temperatura", "sentido": "min", "umbral_amarillo": 3, "umbral_rojo": -2, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "roca", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "sensacion_termica", "sentido": "min", "umbral_amarillo": 0, "umbral_rojo": -6, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "roca", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "viento", "sentido": "max", "umbral_amarillo": 25, "umbral_rojo": 40, "unidad": "km/h", "fuente": "Provisional del equipo" },
+    { "actividad": "roca", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "humedad", "sentido": "max", "umbral_amarillo": 85, "umbral_rojo": 95, "unidad": "%", "fuente": "Provisional del equipo: roca húmeda resbala" },
+
+    { "actividad": "alta_montana", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "temperatura", "sentido": "min", "umbral_amarillo": -8, "umbral_rojo": -15, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "alta_montana", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "sensacion_termica", "sentido": "min", "umbral_amarillo": -15, "umbral_rojo": -25, "unidad": "C", "fuente": "Provisional del equipo" },
+    { "actividad": "alta_montana", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "viento", "sentido": "max", "umbral_amarillo": 40, "umbral_rojo": 60, "unidad": "km/h", "fuente": "Provisional del equipo" },
+    { "actividad": "alta_montana", "zonas": ["valle", "campo_base", "zona_alta"], "variable": "humedad", "sentido": "max", "umbral_amarillo": 90, "umbral_rojo": 98, "unidad": "%", "fuente": "Provisional del equipo" }
+  ]
+}
